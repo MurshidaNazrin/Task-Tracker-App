@@ -1,0 +1,160 @@
+.app-container {
+    /* max-width: 800px; */
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+    min-height: 100vh;
+    background-color: #cbe7f3;
+    /* position: 'relative'; */
+}
+
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 20px;
+    background-color: #0d6489;
+    border-radius: 8px;
+    color: white;
+}
+
+.header-title {
+    margin: 0;
+    font-size: 24px;
+}
+
+.header-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.toggle-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 8px;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    background-color: white;
+    color: #0d6489;
+    font-weight: bold;
+}
+
+
+/* form container */
+.form-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0.15);
+    margin-top: 12px;
+    width: 400px;
+    box-sizing: border-box;
+    position: absolute;
+    z-index: '100';
+    right: 20px;
+}
+
+/* form layout(Mobile first- column) */
+.task-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.submit-btn {
+    padding: 10px 16px;
+    background-color: #065679;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.task-list {
+    margin-top: 20px;
+}
+
+.task-item-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-top: 12px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.08);
+    gap: 12px;
+}
+
+.task-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-title {
+    margin: 0;
+    font-size: 16px;
+}
+
+.task-title.completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.task-category {
+    margin: 0;
+    font-size: 14px;
+    color: #514f4f;
+}
+
+.delete-btn {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+/* ====Media queries==== */
+
+/* desktop & Laptop (768px and above) */
+@media (min-width: 768px) {
+    .app-container {
+        padding: 32px 16px;
+    }
+
+    .task-form {
+        flex-direction: column;
+    }
+
+    .submit-btn {
+        width: auto;
+        white-space: nowrap;
+    }
+}
+
+/* mobile screens */
+@media (max-width: 480px) {
+    .form-container {
+        width: 390px;
+    }
+
+    .task-item-card {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+}

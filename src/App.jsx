@@ -1,56 +1,110 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TaskItem from './TaskItem';
+import './App.css';
 
 
 function App() {
-  const initialTasks = [
-    { id: 1, title: "Morning meditation and stretching", category: 'Health', isDone: true },
-    { id: 2, title: "Learn React fundamentals", category: 'Study', isDone: false },
-    { id: 3, title: "Review pull requests", category: 'Work', isDone: true },
-    { id: 4, title: "Grocery shopping for the week", category: 'Errands', isDone: true },
-    { id: 5, title: "30-minute Cardio workout", category: 'Health', isDone: false },
-    { id: 6, title: "Read 20 pages for current book", category: 'Personal', isDone: true },
-    { id: 7, title: "Team standup meeting", category: 'Work', isDone: true },
-    { id: 8, title: "Practice javascript algorithms", category: 'Study', isDone: false },
-    { id: 9, title: "Organisze desk setup", category: 'Chores', isDone: true },
-    { id: 10, title: "Meal prep for dinner", category: 'Personal', isDone: true },
-  ];
+  const initialTasks = [];
+  const [task, setTask] = useState(() => {
+    const savedTasks = localStorage.getItem('myTasks');
+    if (savedTasks && savedTasks !== 'undefined') {
+      try {
+        return JSON.parse(savedTasks);
+      } catch (e) {
+        return initialTasks;
+      }
+    }
+    return initialTasks;
+  })
+  const [taskInput, settaskInput] = useState('');
+  const [categoryInput, setCategoryInput] = useState('');
+  const [showForm, setShowForm] = useState(false);
+
+  const handleAddTask = (e) => {
+    e.preventDefault();
+    if (!taskInput.trim()) return;
+
+    const newTask = {
+      id: Date.now(),
+      title: taskInput,
+      category: categoryInput,
+      isDone: false
+    };
+    setTask(prevTask => [...prevTask, newTask]);
+    settaskInput('');
+    setShowForm(false);
+  };
+
+  const handleToggle = (id) => {
+    setTask((prevTasks) => 
+      prevTasks.map((t) => 
+      t.id === id ? {...t, isDone: !t.isDone }: t
+  ) )
+  }
+
+  const handleDeleteTask = (idToDelete) => {
+    setTask(prevTask => prevTask.filter(task => task.id !== idToDelete));
+  }
+
+  useEffect(() => {
+    localStorage.setItem('myTasks', JSON.stringify(task));
+  }, [task])
 
 
   return (
     <>
-      <main style={{backgroundColor: '#cbe7f3'}}>
-        <header>
-          <div style={{
-            width: "100%",
-            padding: '20px 0',
-            backgroundColor: '#0d6489',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            
-          }}>
-     <h1 style={{color: 'white',margin: '0',fontSize: '28px'}}>Tasks</h1>
-     <span style={{color: 'rgba(255,255,255,0.8)', fontSize: '14px', marginTop: "4px"}}>All Lists</span>
-
+      <main
+        className='app-container'>
+        <header className='app-header'>
+          <div>
+            <h1 className='header-title'>Tasks</h1>
+            <span className='header-subtitle' >All Lists</span>
           </div>
+          <button className='toggle-btn'
+            onClick={() => setShowForm(!showForm)}>
+            {showForm ? 'x' : '+'}
+          </button>
         </header>
-        
 
-        {initialTasks.map(task => (
-          <TaskItem
-            key={task.id}
-            title={task.title}
-            category={task.category}
-            isDone={task.isDone}
+        {/* Add task form */}
+        {showForm && (
+          <div className='form-container'>
+            <form onSubmit={handleAddTask} className='task-form'>
+              <input
+                type="text"
+                placeholder='Enter a new Task...'
+                value={taskInput}
+                onChange={(e) => settaskInput(e.target.value)}
+                className='task-input'
+              />
 
-          />
-        ))}
+              <input
+                type="text"
+                placeholder='Enter category...'
+                value={categoryInput}
+                onChange={(e) => setCategoryInput(e.target.value)}
+                className='task-input'
+              />
+
+              <button type="submit" className='submit-btn'>Add</button>
+            </form>
+          </div>
+        )}
+
+        <section className='task-list'>
+          {task.map(task => (
+            <TaskItem
+              key={task.id}
+              id={task.id}
+              title={task.title}
+              category={task.category}
+              isDone={task.isDone}
+              onDelete={handleDeleteTask}
+              onToggle={handleToggle}
+            />
+          ))}
+        </section>
       </main>
-
-
-
     </>
   )
 }
