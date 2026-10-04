@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import TaskItem from './TaskItem';
 import './App.css';
 
@@ -19,6 +19,14 @@ function App() {
   const [taskInput, settaskInput] = useState('');
   const [categoryInput, setCategoryInput] = useState('');
   const [showForm, setShowForm] = useState(false);
+
+  const inputRef = useRef(null);
+
+  useEffect(()=> {
+    if(showForm && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showForm]);
 
   const handleAddTask = (e) => {
     e.preventDefault();
@@ -71,6 +79,7 @@ function App() {
           <div className='form-container'>
             <form onSubmit={handleAddTask} className='task-form'>
               <input
+              ref={inputRef}
                 type="text"
                 placeholder='Enter a new Task...'
                 value={taskInput}
